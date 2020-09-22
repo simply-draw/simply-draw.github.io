@@ -33,7 +33,7 @@
     <div class="col-md-12">
       <!-- Logo -->
       <div class="brand wow fadeIn" data-wow-delay="0.1s"> Simply Draw
-        <div class="title"> - a Hong Kong Girl with dream -  </div>
+        <div class="title" id="full_name"> - a Hong Kong Girl with dream -  </div>
       </div>
 
       <!-- Navigation -->
@@ -103,78 +103,20 @@
 
 <!-- Start projects -->
 <div class="container">
-
-  <ul class="portfolio-filter text-center">
-    <li><a class="btn btn-default active" href="#" data-filter="*">All</a></li>
-    <li><a class="btn btn-default" href="#" data-filter=".friend">Friendship</a></li>
-    <li><a class="btn btn-default" href="#" data-filter=".love">Relationship</a></li>
-    <li><a class="btn btn-default" href="#" data-filter=".random">Random</a></li>
-  </ul><!--/#portfolio-filter-->
-
   <div class="row">
-    <div class="portfolio-items grid">
-      <div class="portfolio-item friend col-xs-12 col-sm-12 col-md-4 thumbs">
+    <div class="portfolio-items grid" id="content_div">
+      <!-- <div class="portfolio-item friend col-xs-12 col-sm-12 col-md-4 thumbs">
         <figure class="effect-moses wow fadeIn" data-wow-delay="0.1s">
           <a href="img/3.jpg">
             <img src="img/3.jpg" alt=""/>
             <figcaption>
               <h2>#3</h2>
-              <!-- <p>生活中每個點滴都值得被珍惜</p> -->
             </figcaption>
           </a>
         </figure>
         <p class="img_caption">
-          “Travel is the only thing you buy that makes you richer”
-            <br>
-            旅行可以讓你在喧鬧中洗滌心靈<br>
-            旅行可以讓你透過吃喝玩樂享受生活<br>
-            旅行可以讓你感受當地文化<br>
-            旅行可以讓你與朋友/家人/情人盡情相處<br>
-            旅行可以讓你感受世界之大<br>
-            旅行可以讓你意識到自己的渺小<br>
-            <br>
-            好想好想去旅行放鬆，但肺炎搞到大家都冇得去😭不過都可以藉住呢一段時間好好咁探索下香港，其實呢個HomeKong都好靚架，平時可以去下啲冇去過嘅地方，如果有能力都可以去下staycation😍（不過記得要做好衛生措施阿）
         </p>
-      </div>
-
-      <div class="portfolio-item friend col-xs-12 col-sm-12 col-md-4 thumbs">
-        <figure class="effect-moses wow fadeIn" data-wow-delay="0.1s">
-          <a href="img/2.jpg">
-            <img src="img/2.jpg" alt=""/>
-            <figcaption>
-              <h2>#2</h2>
-              <!-- <p>生活中每個點滴都值得被珍惜</p> -->
-            </figcaption>
-          </a>
-        </figure>
-        <p class="img_caption">
-          對我而言最美好的友情是：<br>
-          你們之間即使冷場也不尷尬<br>
-          即便對對方有不滿、有爭執，但過後仍是密友<br>
-          見過對方最不堪及最光輝的一面<br>
-          知道即使你跌倒，對方不會掉棄你繼續前行<br>
-          <br>
-          呢個fd我識左10年，唔知嬲過對方幾多次，都數唔清嗌過幾次交
-          例子：影呢張相嗰日我係咁比蚊咬，而佢堅持要企喺原地睇相唔肯走，之後我就嬲左😂
-        </p>
-      </div><!-- /portfolio-item -->
-
-
-      <div class="portfolio-item random col-xs-12 col-sm-12 col-md-4 thumbs">
-        <figure class="effect-moses wow fadeIn" data-wow-delay="0.1s">
-          <a href="img/1.jpg">
-            <img src="img/1.jpg" alt=""/>
-            <figcaption>
-              <h2>#1</h2>
-              <!-- <p>生活中每個點滴都值得被珍惜</p> -->
-            </figcaption>
-          </a>
-        </figure>
-        <p class="img_caption">生活中每個點滴都值得被珍惜，不論係開心、難過、期待、焦慮、平凡⋯⋯💭<br>
-          一個懵懂女孩想用一個ig page，透過攝影、繪圖同文字記錄生活中嘅每一刻💡
-        </p>
-      </div><!-- /portfolio-item -->
-
+      </div> -->
 
     </div><!-- /portfolio-items -->
   </div><!-- /row -->
@@ -186,7 +128,7 @@
 
 <!-- Start footer -->
 <div class="footer col-md-6 col-xs-offset-3">
-  <h5>Copyright 2020
+  <h5>Copyright 2020<p id="biography"></p>
     <!-- <a href="#"><i class="fa fa-facebook fa-1x icon1"></i></a>
     <a href="#"><i class="fa fa-twitter fa-1x icon1"></i></a> -->
     <a href="https://www.instagram.com/simply_draww/"><i class="fa fa-instagram fa-1x icon1"></i></a>
@@ -223,7 +165,33 @@
 <script src="js/wow.js"></script>
 
 <script>
-new WOW().init();
+//new WOW().init();
+$.ajax({
+        url: "https://www.instagram.com/simply_draww/?__a=1",
+        type: 'GET',
+        dataType: 'json', // added data type
+        success: function(res) {
+          console.log(res);
+          console.log(res.graphql);
+          console.log(res.graphql.user);
+          console.log(res.graphql.user.biography);
+          $("#biography").text(res.graphql.user.biography);
+          $("#full_name").text(res.graphql.user.full_name);
+          var images = res.graphql.user.edge_owner_to_timeline_media.edges;
+          var images_length = images.length;
+          $.each(images, function( index, image ) {
+            var new_figure = "<div class='portfolio-item friend col-xs-12 col-sm-12 col-md-4 thumbs'><figure class='effect-moses wow fadeIn' data-wow-delay='0.1s'><a href='#image.node.display_url'><img src='"+image.node.display_url+"' alt=''/><figcaption><h2>#"+(images_length - index)+"</h2></figcaption></a></figure><p class='img_caption'>"+image.node.edge_media_to_caption.edges[0].node.text+"</p></div>";
+            document.getElementById("content_div").insertAdjacentHTML("beforebegin", new_figure);
+            console.log(new_figure);
+          });
+
+        }
+  });
+
+function createPost(){
+  var new_div = $("<div class='portfolio-item friend col-xs-12 col-sm-12 col-md-4 thumbs'><figure class='effect-moses wow fadeIn' data-wow-delay='0.1s'><a href='img/3.jpg'><img src='img/3.jpg' alt=''/><figcaption><h2>#3</h2></figcaption></a></figure><p class='img_caption'></p></div>")
+  var new_figure = $("")
+}
 
 </script>
 
